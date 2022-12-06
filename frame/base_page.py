@@ -4,7 +4,7 @@ from frame.base_locator import Locator, Selector, BaseLocator, Click
 
 TIMEOUT_MESSAGE = "Can't find element(s) by locator {} in {} s"
 TIMEOUT = 3
-DEFAULT_URL = 'http://192.168.0.104'
+DEFAULT_URL = 'http://127.0.0.1:8081'
 
 
 class BasePage:
@@ -56,6 +56,7 @@ class BasePage:
         element.click()
         element.clear()
         element.send_keys(text)
+        return element
 
     def find_element(self, locator, time=TIMEOUT):
         return self.__wait(time).until(EC.presence_of_element_located(locator),
