@@ -1,8 +1,10 @@
+from enum import Enum
+import logging
 import allure
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from frame.base_locator import Locator, Selector, BaseLocator
 from frame.utils import Utils
@@ -14,6 +16,12 @@ TIMEOUT = 3
 BASE_URL = f'http://{Utils.get_ip()}:8081'
 
 # BASE_URL = 'http://127.0.0.1:8081'
+
+
+class Currency(Enum):
+    USD = '$'
+    EUR = '€'
+    GBP = '£'
 
 
 class BasePage:
@@ -57,7 +65,6 @@ class BasePage:
             return self.driver.get(self.url)
 
     def at_page(self, title):
-        self._logger.info("check if driver at page %s", title)
         return self.driver.title == title
 
     def back(self):
@@ -104,16 +111,20 @@ class BasePage:
     def click(self, locator, time=TIMEOUT):
         self._logger.info("click on %s", locator)
         with allure.step(f"click on {locator}"):
-            if getattr(locator, 'self', None):
+            try:
                 locator = locator.self
+            except:
+                pass
             self.__wait(time).until(
                 EC.element_to_be_clickable(locator)).click()
 
     def hover(self, locator, time=TIMEOUT):
         self._logger.info("hover at %s", locator)
         with allure.step(f"hover at {locator}"):
-            if getattr(locator, 'self', None):
+            try:
                 locator = locator.self
+            except:
+                pass
             element = self.find_element(locator, time)
             self.actions.move_to_element(element).perform()
             return element
@@ -165,10 +176,8 @@ class BasePage:
             try:
                 self.does_present(locator, time=time)
             except TimeoutException:
-                self._logger.info("element %s is not present", locator)
                 return True
             else:
-                self._logger.warning("element %s is present", locator)
                 return False
 
     def is_clickable(self, locator, time=TIMEOUT):

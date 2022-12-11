@@ -17,5 +17,4 @@ class AccountPage(BasePage):
 
     @allure.step("click Continue button")
     def click_continue(self):
-        self._logger.info("click Continue button")
         self.click(self.locator.LOCATOR_BUTTON_CONTINUE)
