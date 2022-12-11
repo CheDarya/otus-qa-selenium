@@ -1,3 +1,4 @@
+import allure
 from frame.base_locator import BaseLocator, Selector
 from frame.base_page import BasePage
 from selenium.webdriver.common.action_chains import ActionChains
@@ -23,20 +24,23 @@ class MainPage(BasePage):
 
     locator = MainPageLocators
 
+    @allure.step("click slideshow Next >")
     def click_slideshow_next(self):
-        el = self.find_element(self.locator.LOCATOR_SLIDESHOW_NEXT)
-        hover = ActionChains(self.driver).move_to_element(el).pause(0.5).click(el)
-        hover.perform()
-
+        self.hover(self.locator.LOCATOR_SLIDESHOW)
+        el = self.is_clickable(self.locator.LOCATOR_SLIDESHOW_NEXT)
+        self.actions.move_to_element(el).pause(0.2).click(el).perform()
+    
+    @allure.step("click slideshow < Prev")
     def click_slideshow_prev(self):
-        el = self.find_element(self.locator.LOCATOR_SLIDESHOW_PREV)
-        hover = ActionChains(self.driver).move_to_element(el).pause(0.5).click(el)
-        hover.perform()
+        self.hover(self.locator.LOCATOR_SLIDESHOW)
+        el = self.is_clickable(self.locator.LOCATOR_SLIDESHOW_PREV)
+        self.actions.move_to_element(el).pause(0.2).click(el).perform()
 
+    @allure.step("click in slideshow")
     def click_slideshow(self):
-        el = self.find_element(self.locator.LOCATOR_SLIDESHOW)
-        hover = ActionChains(self.driver).move_to_element(el).click(el)
-        hover.perform()
+        self.hover(self.locator.LOCATOR_SLIDESHOW)
+        el = self.is_clickable(self.locator.LOCATOR_SLIDESHOW)
+        self.actions.move_to_element(el).pause(0.2).click(el).perform()
 
 
 if __name__ == '__main__':
