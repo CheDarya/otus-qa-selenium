@@ -6,4 +6,4 @@ Selenium basic usage
 
 08.12.2022 homework #6
 
-11.12.2022 homework #7
+11.12.2022 homework #7 повторная загрузка, ошиблась с ветками
